@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
 var Loc = mongoose.model('Location');
 
-var theEarth = (function () {
-    var earthRadius = 6371; // valor en KM
+/* var theEarth = (function () {
+    var earthRadius = 6371; // valor en Metros
 
     var getDistanceFromRads = function (rads) {
         return parseFloat(rads * earthRadius);
@@ -15,6 +15,22 @@ var theEarth = (function () {
     return {
         getDistanceFromRads: getDistanceFromRads,
         getRadsFromDistance: getRadsFromDistance
+    };
+})(); */
+
+var meterConversion = (function () {
+    
+    var meterToKilometer = function (distance) {
+        return parseFloat(distance / 1000);
+    };
+
+    var kilometerToMeter = function (distance) {
+        return parseFloat(distance * 1000);
+    };
+
+    return {
+        meterToKilometer: meterToKilometer,
+        kilometerToMeter: kilometerToMeter
     };
 })();
 
@@ -34,7 +50,7 @@ module.exports.locationsListByDistance = function(req, res) {
   };
   var geoOptions = {
     spherical: true,
-    maxDistance: theEarth.getRadsFromDistance(maxDistance),
+    maxDistance: meterConversion.kilometerToMeter(maxDistance),
     num: 10
   };
   if ((!lng && lng!==0) || (!lat && lat!==0) || !maxDistance) {
@@ -62,7 +78,7 @@ var buildLocationList = function(req, res, results, stats) {
   var locations = [];
   results.forEach(function(doc) {
     locations.push({
-      distance: theEarth.getDistanceFromRads(doc.dis),
+      distance: meterConversion.meterToKilometer(doc.dis),
       name: doc.obj.name,
       address: doc.obj.address,
       rating: doc.obj.rating,
