@@ -1,17 +1,22 @@
-angular
-   .module('loc8rApp')
-   .service('geolocation', geolocation);
+(function () {
 
+  angular
+    .module('loc8rApp')
+    .service('geolocation', geolocation);
 
-var geolocation = function () {
+  function geolocation () {
     var getPosition = function (cbSuccess, cbError, cbNoGeo) {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(cbSuccess, cbError);
-        } else {
-            cbNoGeo();
-        }
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(cbSuccess, cbError);
+      }
+      else {
+        cbNoGeo();
+      }
     };
     return {
-        getPosition: getPosition
+      getPosition : getPosition
     };
-};
+  }
+
+
+})();

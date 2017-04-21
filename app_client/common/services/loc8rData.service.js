@@ -1,13 +1,17 @@
-angular
-   .module('loc8rApp')
-   .service('loc8rData', loc8rData);
+(function() {
 
-var loc8rData = function ($http) {
+  angular
+    .module('loc8rApp')
+    .service('loc8rData', loc8rData);
+
+  loc8rData.$inject = ['$http'];
+  function loc8rData ($http) {
     var locationByCoords = function (lat, lng) {
-        return $http.get('/api/locations?lng=' + lng + '&lat=' + lat + '&maxDistance=20000');
+      return $http.get('/api/locations?lng=' + lng + '&lat=' + lat + '&maxDistance=20000');
     };
     return {
-        locationByCoords : locationByCoords
+      locationByCoords : locationByCoords
     };
-    
-};
+  }
+
+})();
